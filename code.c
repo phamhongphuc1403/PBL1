@@ -119,14 +119,14 @@ void docFile(struct SinhVien* ds, int* slsv) {
 			struct SinhVien sv;
 			fscanf(fOut, "%10d %10s %20[^\n] %10s %10d %10s \n",
 			&sv.ma, sv.hoVaTen.ho, sv.hoVaTen.dem, sv.hoVaTen.ten, &sv.tuoi, sv.gioiTinh);
-			
+
 			ds[i++] = sv;
 			if(feof(fOut)) { // thoat chuong trinh
 				break;
 			}
 		}
 	}
-	
+
 	fclose(fOut);
 	*slsv = i;
 }
@@ -134,7 +134,7 @@ void docFile(struct SinhVien* ds, int* slsv) {
 void hienThiTenCot() {
 	printf("-----------------------------------------------------"
 	"----------------------------------------------------------------\n");
-	printf("%-10s %-10s %-20s %-10s %-10s %-10s\n", 
+	printf("%-10s %-10s %-20s %-10s %-10s %-10s\n",
 		"Ma SV", "Ho", "Dem", "Ten", "Tuoi", "Gioi Tinh");
 }
 
@@ -152,12 +152,12 @@ int main() {
 	struct SinhVien dssv[100];
 	int slsv = 0;
 	int luaChon;
-	
+
 	// docFile(dssv, &slsv);
 	printf("DANH SACH SINH VIEN HIEN THOI:\n");
 	hienThiDSSV(dssv, slsv);
 	int i;
-				
+
 	do {
 		printf("=============== MENU ===============");
 		printf("\n1. Them Sinh vien vao danh sach.");
@@ -168,48 +168,50 @@ int main() {
 		printf("\n6. Ghi thong tin sinh vien ra file.");
 		printf("\n0. Thoat chuong trinh.");
 		printf("\nBan chon ? ");
-		
+
 		scanf("%d", &luaChon);
 		struct SinhVien sv;
-		
+
 		switch(luaChon) {
 			case 0:
 				break;
-				
+
 			case 1:
 				sv = nhapSV();
 				dssv[slsv++] = sv;
 				break;
-				
+
 			case 2:
 				hienThiDSSV(dssv, slsv);
 				break;
-				
+
 			case 3:
 				sapXepTheoTen(dssv, slsv);
 				printf("\nDanh sach sinh vien sau khi sap xep theo ten a-z:\n");
 				hienThiDSSV(dssv, slsv);
 				break;
-				
+
 			case 4:
                 xoaSinhVien(dssv,slsv);
                 slsv--;
 				break;
-				
+
 			case 5:
 				timTheoTen(dssv, slsv);
 				break;
-				
+
 			case 6:
 				ghiFile(dssv, slsv);
 				break;
-				
+
 			default:
 				printf("Sai chuc nang, vui long chon lai!\n");
 				break;
 		}
-		
+
 	} while(luaChon);
-	
+
 	return 0;
 }
+
+//test
