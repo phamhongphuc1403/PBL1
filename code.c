@@ -4,7 +4,7 @@
 struct SinhVien;
 void hienThiDSSV(struct SinhVien*, int);
 void hienThiTenCot();
-
+int isSorted = 0;
 struct HoTen {
 	char ho[20];
 	char dem[21];
@@ -19,6 +19,8 @@ struct NgaySinh{
 
 
 struct SinhVien {
+    char lop[10];
+    int MSSV;
 	struct HoTen hoVaTen;
 	struct NgaySinh ngaySinh ;
 	char gioiTinh[10];
@@ -47,7 +49,14 @@ void nhapNgaySinh(struct NgaySinh* ngaySinh) {
 }
 
 struct SinhVien nhapSV() {
+
+        isSorted = 0;
+
 		struct SinhVien sv;
+
+        printf("Lop: ");
+        scanf("%s", sv.lop);
+
 		nhapHoTen(&sv.hoVaTen);
 		nhapNgaySinh(&sv.ngaySinh);
 		printf("Gioi tinh: ");
@@ -59,8 +68,31 @@ struct SinhVien nhapSV() {
 }
 
 void hienThiTTSV(struct SinhVien sv) {
-	printf("%-10s %-20s %-10s %-10s %-10s %-10s %-10s %-30s \n",
-	sv.hoVaTen.ho, sv.hoVaTen.dem, sv.hoVaTen.ten, sv.ngaySinh.ngay, sv.ngaySinh.thang,sv.ngaySinh.nam,sv.gioiTinh, sv.diaChi);
+    printf("%-16s", sv.lop);
+    hienThiMSSVvaEmail(sv, 0);
+    printf("%-10s %-20s %-10s %-10s %-10s %-10s %-10s %-30s",
+    sv.hoVaTen.ho, sv.hoVaTen.dem, sv.hoVaTen.ten, sv.ngaySinh.ngay, sv.ngaySinh.thang, sv.ngaySinh.nam, sv.gioiTinh, sv.diaChi);
+    hienThiMSSVvaEmail(sv, 1);
+    printf("\n");
+}
+
+void hienThiMSSVvaEmail(struct SinhVien sv, int theLoai) {
+    if (isSorted == 0) {
+        printf("%-16s", "chua cap");
+    } else {
+        if (theLoai == 0) {
+            printf("%-16d", sv.MSSV);
+        } else {
+            printf("%d@dut.udn.vn", sv.MSSV);
+        }
+    }
+}
+void capMSSV(struct SinhVien* ds, int slsv) {
+    isSorted = 1;
+
+    for (int i = 0; i < slsv; i++) {
+        ds[i].MSSV = i + 1;
+    }
 }
 
 void sapXepTheoTen(struct SinhVien* ds, int slsv) {
@@ -74,6 +106,7 @@ void sapXepTheoTen(struct SinhVien* ds, int slsv) {
 			}
 		}
 	}
+	capMSSV(ds, slsv);
 }
 
 void xoaSinhVien(struct SinhVien* ds, int slsv){
@@ -149,8 +182,8 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
 void hienThiTenCot() {
 	printf("-----------------------------------------------------"
 	"----------------------------------------------------------------\n");
-	printf("%-10s %-20s %-10s %-10s %-10s %-10s %-10s %-30s\n",
-		"Ho", "Dem", "Ten","Ngay sinh", "Thang sinh", "Nam sinh", "Gioi Tinh", "Dia Chi");
+	printf("%-15s %-15s %-10s %-20s %-10s %-10s %-10s %-10s %-10s %-30s %-30s\n",
+		"Lop", "MSSV", "Ho", "Dem", "Ten","Ngay sinh", "Thang sinh", "Nam sinh", "Gioi Tinh", "Dia Chi", "Email");
 }
 
 void hienThiDSSV(struct SinhVien* ds, int slsv) {
