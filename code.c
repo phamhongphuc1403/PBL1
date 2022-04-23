@@ -11,13 +11,10 @@ struct HoTen {
 	char ten[20];
 };
 struct NgaySinh{
-	char ngay[3];
-	char thang[3];
-	char nam[5];
+	int ngay;
+	int thang;
+	int nam;
 };
-
-
-
 struct SinhVien {
     char lop[10];
     int MSSV;
@@ -27,6 +24,24 @@ struct SinhVien {
 	char diaChi[30];
 
 };
+struct SinhVien nhapSV() {
+
+        isSorted = 0;
+
+		struct SinhVien sv;
+
+        printf("Lop: ");
+        scanf("%s", sv.lop);
+
+		nhapHoTen(&sv.hoVaTen);
+		nhapNgaySinh(&sv.ngaySinh);
+		printf("Gioi tinh: ");
+		scanf("%s", sv.gioiTinh);
+		printf("Nhap dia chi:");
+		getchar();
+		gets(sv.diaChi);
+		return sv;
+}
 
 void nhapHoTen(struct HoTen* ten) {
     char HoVaTen[100];
@@ -49,40 +64,35 @@ void nhapHoTen(struct HoTen* ten) {
 void nhapNgaySinh(struct NgaySinh* ngaySinh) {
 	printf("Nhap ngay sinh\n");
 	printf("Ngay: ");
-	scanf("%s", ngaySinh->ngay);
+	scanf("%d", &ngaySinh->ngay);
 	printf("Thang: ");
-	scanf("%s", ngaySinh->thang);
+	scanf("%d", &ngaySinh->thang);
 	printf("Nam: ");
-	scanf("%s", ngaySinh->nam);
-}
-
-struct SinhVien nhapSV() {
-
-        isSorted = 0;
-
-		struct SinhVien sv;
-
-        printf("Lop: ");
-        scanf("%s", sv.lop);
-
-		nhapHoTen(&sv.hoVaTen);
-		nhapNgaySinh(&sv.ngaySinh);
-		printf("Gioi tinh: ");
-		scanf("%s", sv.gioiTinh);
-		printf("Nhap dia chi:");
-		getchar();
-		gets(sv.diaChi);
-		return sv;
+	scanf("%d", &ngaySinh->nam);
 }
 
 void hienThiTTSV(struct SinhVien sv) {
     printf("%-16s", sv.lop);
     hienThiMSSVvaEmail(sv, 0);
-    printf("%-20s %-10s %s/%s/%-10s %-10s %-30s",
-    sv.hoVaTen.ho, sv.hoVaTen.ten, sv.ngaySinh.ngay, sv.ngaySinh.thang, sv.ngaySinh.nam, sv.gioiTinh, sv.diaChi);
-
+    printf("%-20s %-11s", sv.hoVaTen.ho, sv.hoVaTen.ten);
+    hienThiNgaySinh(sv);
+    printf("%-10s %-31s", sv.gioiTinh, sv.diaChi);
     hienThiMSSVvaEmail(sv, 1);
     printf("\n");
+}
+
+void hienThiNgaySinh(struct SinhVien sv) {
+    if (sv.ngaySinh.ngay < 10) {
+        printf("0%d/", sv.ngaySinh.ngay);
+    } else {
+        printf("%d/", sv.ngaySinh.ngay);
+    }
+    if (sv.ngaySinh.thang < 10) {
+        printf("0%d/", sv.ngaySinh.thang);
+    } else {
+        printf("%d/", sv.ngaySinh.thang);
+    }
+    printf("%-10d", sv.ngaySinh.nam);
 }
 
 void hienThiMSSVvaEmail(struct SinhVien sv, int theLoai) {
@@ -135,6 +145,7 @@ void xoaSinhVien(struct SinhVien* ds, int slsv){
 	if(timSV == 0) {
 		printf("Khong co sinh vien %s trong danh sach!\n", ten);
 	}
+	isSorted = 0;
 }
 
 void timTheoTen(struct SinhVien* ds, int slsv) {
