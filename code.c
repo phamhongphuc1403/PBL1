@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
 
 struct SinhVien;
 void hienThiDSSV(struct SinhVien*, int);
@@ -18,6 +20,7 @@ struct NgaySinh{
 struct SinhVien {
     char lop[10];
     int MSSV;
+	char email[30];
 	struct HoTen hoVaTen;
 	struct NgaySinh ngaySinh ;
 	char gioiTinh[10];
@@ -102,7 +105,7 @@ void hienThiMSSVvaEmail(struct SinhVien sv, int theLoai) {
         if (theLoai == 0) {
             printf("%-16d", sv.MSSV);
         } else {
-            printf("%d@dut.udn.vn", sv.MSSV);
+            printf("%-30s", sv.email);
         }
     }
 }
@@ -112,6 +115,8 @@ void capMSSV(struct SinhVien* ds, int slsv) {
 
     for (int i = 0; i < slsv; i++) {
         ds[i].MSSV = i + 1;
+		itoa(i+1,ds[i].email,10);
+		strcat(ds[i].email,"@dut.udn.vn");
     }
 }
 
@@ -174,31 +179,13 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
 // 	int i;
 // 	for(i = 0; i < slsv; i++) {
 // 		struct SinhVien sv = ds[i];
-// 		fprintf(fOut, "%-10d %-10s %-20s %-10s %-10d %-10s\n",
-// 		sv.ma, sv.hoVaTen.ho, sv.hoVaTen.dem, sv.hoVaTen.ten, sv.gioiTinh);
+// 		fprintf(fOut, "%-15s %-15s %-20s %-10s %d/%d/%-15d %-10s %-30s %-30s\n",
+// 		sv.lop, sv.MSSV, sv.hoVaTen.ho, sv.hoVaTen.ten,sv.ngaySinh.ngay,sv.ngaySinh.thang,sv.ngaySinh.nam, sv.gioiTinh, sv.diaChi, sv.email);
 // 	}
 // 	fclose(fOut);
 // }
 
-// void docFile(struct SinhVien* ds, int* slsv) {
-// 	FILE* fOut = fopen("SV.txt", "r");
-// 	int i = 0;
-// 	if(fOut) {
-// 		while(1) {
-// 			struct SinhVien sv;
-// 			fscanf(fOut, "%10d %10s %20[^\n] %10s %10d %10s \n",
-// 			&sv.ma, sv.hoVaTen.ho, sv.hoVaTen.dem, sv.hoVaTen.ten,, sv.gioiTinh);
 
-// 			ds[i++] = sv;
-// 			if(feof(fOut)) { // thoat chuong trinh
-// 				break;
-// 			}
-// 		}
-// 	}
-
-// 	fclose(fOut);
-// 	*slsv = i;
-// }
 
 void hienThiTenCot() {
 	printf("-----------------------------------------------------"
@@ -221,11 +208,6 @@ int main() {
 	struct SinhVien dssv[100];
 	int slsv = 0;
 	int luaChon;
-
-	// docFile(dssv, &slsv);
-//	printf("DANH SACH SINH VIEN HIEN THOI:\n");
-//	hienThiDSSV(dssv, slsv);
-//	int i;
 
 	do {
 		printf("=============== MENU ===============");
@@ -270,9 +252,9 @@ int main() {
 				timTheoTen(dssv, slsv);
 				break;
 
-			// case 6:
-			// 	ghiFile(dssv, slsv);
-			// 	break;
+			case 6:
+				ghiFile(dssv, slsv);
+				break;
 
 			default:
 				printf("Sai chuc nang, vui long chon lai!\n");
