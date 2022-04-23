@@ -170,20 +170,20 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
 	}
 }
 
-// void ghiFile(struct SinhVien* ds, int slsv) {
-// 	getchar();
-// 	char fName[26];
-// 	printf("Nhap ten file: ");
-// 	gets(fName);
-// 	FILE* fOut = fopen(fName, "a");
-// 	int i;
-// 	for(i = 0; i < slsv; i++) {
-// 		struct SinhVien sv = ds[i];
-// 		fprintf(fOut, "%-15s %-15s %-20s %-10s %d/%d/%-15d %-10s %-30s %-30s\n",
-// 		sv.lop, sv.MSSV, sv.hoVaTen.ho, sv.hoVaTen.ten,sv.ngaySinh.ngay,sv.ngaySinh.thang,sv.ngaySinh.nam, sv.gioiTinh, sv.diaChi, sv.email);
-// 	}
-// 	fclose(fOut);
-// }
+void ghiFile(struct SinhVien* ds, int slsv) {
+	getchar();
+	char fName[26];
+	printf("Nhap ten file: ");
+	gets(fName);
+	FILE* fOut = fopen(fName, "a");
+	int i;
+	for(i = 0; i < slsv; i++) {
+		struct SinhVien sv = ds[i];
+		fprintf(fOut, "%-15s %-15d %-20s %-10s %d /%d/ %-15d %-10s %-30s %-30s\n",
+		sv.lop, sv.MSSV, sv.hoVaTen.ho, sv.hoVaTen.ten,sv.ngaySinh.ngay,sv.ngaySinh.thang,sv.ngaySinh.nam, sv.gioiTinh, sv.diaChi, sv.email);
+	}
+	fclose(fOut);
+}
 
 
 
@@ -216,6 +216,7 @@ int main() {
 		printf("\n3. Sap xep theo ten.");
 		printf("\n4. Xoa sinh vien theo ten.");
 		printf("\n5. Tim sinh vien theo ten.");
+		printf("\n6. Ghi file");
 		printf("\n0. Thoat chuong trinh.");
 		printf("\nBan chon ? ");
 
