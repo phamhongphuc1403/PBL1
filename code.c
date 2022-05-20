@@ -74,6 +74,24 @@ void nhapNgaySinh(struct NgaySinh* ngaySinh) {
 	scanf("%d", &ngaySinh->nam);
 }
 
+
+void hienThiTenCot() {
+	printf("-----------------------------------------------------"
+	"----------------------------------------------------------------\n");
+	printf("%-15s %-15s %-20s %-10s %-15s %-10s %-30s %-30s\n",
+		"Lop", "MSSV", "Ho", "Ten", "Ngay Sinh", "Gioi Tinh", "Dia Chi", "Email");
+}
+
+void hienThiDSSV(struct SinhVien* ds, int slsv) {
+	hienThiTenCot();
+	int i;
+	for(i = 0; i < slsv; i++) {
+		hienThiTTSV(ds[i]);
+	}
+	printf("-----------------------------------------------------"
+	"----------------------------------------------------------------\n");
+}
+
 void hienThiTTSV(struct SinhVien sv) {
     printf("%-16s", sv.lop);
     hienThiMSSVvaEmail(sv, 0);
@@ -159,7 +177,7 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
 	scanf("%s", ten);
 	hienThiTenCot();
 	int i, timSV = 0;
-	for(i = 0; i < slsv; i++) {
+	for(int i = 0; i < slsv; i++) {
 		if(strcmp(ten, ds[i].hoVaTen.ten) == 0) {
 			hienThiTTSV(ds[i]);
 			timSV = 1;
@@ -170,44 +188,61 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
 	}
 }
 
-void ghiFile(struct SinhVien* ds, int slsv) {
-	getchar();
-	char fName[26];
-	printf("Nhap ten file: ");
-	gets(fName);
-	FILE* fOut = fopen(fName, "a");
-	int i;
-	for(i = 0; i < slsv; i++) {
-		struct SinhVien sv = ds[i];
-		fprintf(fOut, "%-15s %-15d %-20s %-10s %d /%d/ %-15d %-10s %-30s %-30s\n",
-		sv.lop, sv.MSSV, sv.hoVaTen.ho, sv.hoVaTen.ten,sv.ngaySinh.ngay,sv.ngaySinh.thang,sv.ngaySinh.nam, sv.gioiTinh, sv.diaChi, sv.email);
-	}
-	fclose(fOut);
-}
+ void ghiFile(struct SinhVien* ds, int slsv) {
+ 	FILE* fOut = fopen("dssv", "w");
+ 	int i;
+ 	fprintf(fOut, "%d\n", slsv);
+ 	for(int i = 0; i < slsv; i++) {
+        fprintf(fOut, "%s\n", ds[i].lop);
 
+        if (isSorted == 0) {
+            fprintf(fOut,"%d\n", -1);
+        } else {
+            fprintf(fOut,"%d\n", ds[i].MSSV);
+        }
+        fprintf(fOut, "%s\n%s\n%d\n%d\n%d\n%s\n%s\n",
+        ds[i].hoVaTen.ho, ds[i].hoVaTen.ten, ds[i].ngaySinh.ngay, ds[i].ngaySinh.thang, ds[i].ngaySinh.nam, ds[i].gioiTinh, ds[i].diaChi);
 
+        if (isSorted == 0) {
+            fprintf(fOut,"%s\n", "chua-cap");
+        } else {
+            fprintf(fOut,"%s\n", ds[i].email);
+        }
+ 	}
+ 	fclose(fOut);
+ }
 
-void hienThiTenCot() {
-	printf("-----------------------------------------------------"
-	"----------------------------------------------------------------\n");
-	printf("%-15s %-15s %-20s %-10s %-15s %-10s %-30s %-30s\n",
-		"Lop", "MSSV", "Ho", "Ten", "Ngay Sinh", "Gioi Tinh", "Dia Chi", "Email");
-}
+ void docFile(struct SinhVien* ds, int *slsv) {
+     int a;
+    FILE* fIn = fopen("dssv", "r");
+    fscanf(fIn, "%d", &a);
+    *slsv = a;
 
-void hienThiDSSV(struct SinhVien* ds, int slsv) {
-	hienThiTenCot();
-	int i;
-	for(i = 0; i < slsv; i++) {
-		hienThiTTSV(ds[i]);
-	}
-	printf("-----------------------------------------------------"
-	"----------------------------------------------------------------\n");
-}
+    for (int i = 0; i < *slsv; i++) {
+        fscanf(fIn, "%s", &ds[i].lop);
+        fscanf(fIn, "%d ", &ds[i].MSSV);
+        fflush(stdin);
+		fgets(ds[i].hoVaTen.ho, 20, fIn);
+		ds[i].hoVaTen.ho[strlen(ds[i].hoVaTen.ho) - 1] = '\0';
+		fscanf(fIn, "%s", &ds[i].hoVaTen.ten);
+        fscanf(fIn, "%d", &ds[i].ngaySinh.ngay);
+        fscanf(fIn, "%d", &ds[i].ngaySinh.thang);
+        fscanf(fIn, "%d", &ds[i].ngaySinh.nam);
+		fscanf(fIn, "%s ", &ds[i].gioiTinh);
+        fflush(stdin);
+		fgets(ds[i].diaChi, 30, fIn);
+		ds[i].diaChi[strlen(ds[i].diaChi) - 1] = '\0';
+        fscanf(fIn, "%s", &ds[i].email);
+    }
+
+ }
 
 int main() {
 	struct SinhVien dssv[100];
 	int slsv = 0;
 	int luaChon;
+
+    docFile(dssv, &slsv);
 
 	do {
 		printf("=============== MENU ===============");
@@ -216,7 +251,7 @@ int main() {
 		printf("\n3. Sap xep theo ten.");
 		printf("\n4. Xoa sinh vien theo ten.");
 		printf("\n5. Tim sinh vien theo ten.");
-		printf("\n6. Ghi file");
+		printf("\n6. Luu danh sach vao file.");
 		printf("\n0. Thoat chuong trinh.");
 		printf("\nBan chon ? ");
 
@@ -228,8 +263,6 @@ int main() {
 				break;
 
 			case 1:
-
-
 				sv = nhapSV();
 				dssv[slsv++] = sv;
 				break;
