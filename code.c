@@ -18,6 +18,8 @@ struct NgaySinh{
 	int nam;
 };
 struct SinhVien {
+    int khoa;
+    int khoi;
     char lop[10];
     int MSSV;
 	char email[30];
@@ -33,6 +35,10 @@ struct SinhVien nhapSV() {
 
 		struct SinhVien sv;
 
+        printf("Khoa: ");
+        scanf("%d", &sv.khoa);
+        printf("Khoi: ");
+        scanf("%d", &sv.khoi);
         printf("Lop: ");
         scanf("%s", sv.lop);
 
@@ -78,8 +84,8 @@ void nhapNgaySinh(struct NgaySinh* ngaySinh) {
 void hienThiTenCot() {
 	printf("-----------------------------------------------------"
 	"----------------------------------------------------------------\n");
-	printf("%-15s %-15s %-20s %-10s %-15s %-10s %-30s %-30s\n",
-		"Lop", "MSSV", "Ho", "Ten", "Ngay Sinh", "Gioi Tinh", "Dia Chi", "Email");
+	printf("%-15s %-15s %-15s %-15s %-20s %-10s %-15s %-10s %-30s %-30s\n",
+		"Khoa", "Khoi", "Lop", "MSSV", "Ho", "Ten", "Ngay Sinh", "Gioi Tinh", "Dia Chi", "Email");
 }
 
 void hienThiDSSV(struct SinhVien* ds, int slsv) {
@@ -93,7 +99,7 @@ void hienThiDSSV(struct SinhVien* ds, int slsv) {
 }
 
 void hienThiTTSV(struct SinhVien sv) {
-    printf("%-16s", sv.lop);
+    printf("%-16d%-16d%-16s", sv.khoa, sv.khoi, sv.lop);
     hienThiMSSVvaEmail(sv, 0);
     printf("%-20s %-11s", sv.hoVaTen.ho, sv.hoVaTen.ten);
     hienThiNgaySinh(sv);
@@ -132,9 +138,12 @@ void capMSSV(struct SinhVien* ds, int slsv) {
     isSorted = 1;
 
     for (int i = 0; i < slsv; i++) {
-        ds[i].MSSV = i + 1;
-		itoa(i+1,ds[i].email,10);
-		strcat(ds[i].email,"@dut.udn.vn");
+//        ds[i].MSSV = i + 1;
+//		itoa(i+1,ds[i].email,10);
+//		strcat(ds[i].email,"@dut.udn.vn");
+        ds[i].MSSV = ds[i].khoa * 1000000 + ds[i].khoi * 10000 + i + 1;
+        itoa(ds[i].MSSV,ds[i].email,10);
+		strcat(ds[i].email,"@sv1.dut.udn.vn");
     }
 }
 
@@ -150,6 +159,56 @@ void sapXepTheoTen(struct SinhVien* ds, int slsv) {
 		}
 	}
 	capMSSV(ds, slsv);
+}
+
+void sapXep(struct SinhVien* ds, int slsv) {
+	sapXepTheoTen(ds, slsv);
+	int i, j, k;
+
+	// Sap xep khoa
+	for(i = 0; i < slsv - 1; i++) {
+		for(j = i + 1; j < slsv; j++) {
+			if(ds[i].khoa < ds[j].khoa ){
+				struct SinhVien sv = ds[j];
+				ds[j] = ds[j - 1];
+				ds[j - 1] = sv;
+			}
+		}
+	}
+
+	// Sap xep khoi
+	int dau = 0;
+	int cuoi = slsv;
+	for(i = 0; i < slsv; i++){
+		if(ds[i].khoa == ds[i-1].khoa){
+			cuoi = i-1;
+			for(j = dau; j < cuoi - 1; j++) {
+				for(k = j + 1; k < cuoi; k++) {
+					if(ds[j].khoi < ds[k].khoi ) {
+						struct SinhVien sv = ds[k];
+						ds[k] = ds[k - 1];
+						ds[k - 1] = sv;
+					}
+				}
+			}
+			dau = i;
+		}
+	}
+	capMSSV(ds, slsv);
+}
+
+void sapXepTheoLop(struct SinhVien* ds, int slsv){
+	sapXepTheoTen(ds, slsv);
+	for(int i = 0; i < slsv - 1; i++) {
+		for(int j = i + 1; j < slsv; j++) {
+			if(ds[i].lop < ds[j].lop ){
+				struct SinhVien sv = ds[j];
+				ds[j] = ds[j - 1];
+				ds[j - 1] = sv;
+			}
+		}
+	}
+
 }
 
 void xoaSinhVien(struct SinhVien* ds, int slsv){
@@ -191,9 +250,9 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
  void ghiFile(struct SinhVien* ds, int slsv) {
  	FILE* fOut = fopen("dssv", "w");
  	int i;
- 	fprintf(fOut, "%d\n", slsv);
+ 	fprintf(fOut, "%d\n%d\n", slsv, isSorted);
  	for(int i = 0; i < slsv; i++) {
-        fprintf(fOut, "%s\n", ds[i].lop);
+        fprintf(fOut, "%d\n%d\n%s\n", ds[i].khoa, ds[i].khoi, ds[i].lop);
 
         if (isSorted == 0) {
             fprintf(fOut,"%d\n", -1);
@@ -217,17 +276,15 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
     FILE* fIn = fopen("dssv", "r");
     fscanf(fIn, "%d", &a);
     *slsv = a;
-
+    fscanf(fIn, "%d", &isSorted);
     for (int i = 0; i < *slsv; i++) {
-        fscanf(fIn, "%s", &ds[i].lop);
+        fscanf(fIn, "%d%d%s", &ds[i].khoa, &ds[i].khoi, &ds[i].lop);
         fscanf(fIn, "%d ", &ds[i].MSSV);
         fflush(stdin);
 		fgets(ds[i].hoVaTen.ho, 20, fIn);
 		ds[i].hoVaTen.ho[strlen(ds[i].hoVaTen.ho) - 1] = '\0';
-		fscanf(fIn, "%s", &ds[i].hoVaTen.ten);
-        fscanf(fIn, "%d", &ds[i].ngaySinh.ngay);
-        fscanf(fIn, "%d", &ds[i].ngaySinh.thang);
-        fscanf(fIn, "%d", &ds[i].ngaySinh.nam);
+        fscanf(fIn, "%s", &ds[i].hoVaTen.ten);
+        fscanf(fIn, "%d%d%d", &ds[i].ngaySinh.ngay, &ds[i].ngaySinh.thang, &ds[i].ngaySinh.nam);
 		fscanf(fIn, "%s ", &ds[i].gioiTinh);
         fflush(stdin);
 		fgets(ds[i].diaChi, 30, fIn);
@@ -246,12 +303,14 @@ int main() {
 
 	do {
 		printf("=============== MENU ===============");
-		printf("\n1. Them Sinh vien vao danh sach.");
+printf("\n1. Them Sinh vien vao danh sach.");
 		printf("\n2. Hien thi danh sach sinh vien.");
 		printf("\n3. Sap xep theo ten.");
-		printf("\n4. Xoa sinh vien theo ten.");
-		printf("\n5. Tim sinh vien theo ten.");
-		printf("\n6. Luu danh sach vao file.");
+		printf("\n4. Sap xep theo lop.");
+		printf("\n5. Sap xep theo khoa.");
+		printf("\n6. Xoa sinh vien theo ten.");
+		printf("\n7. Tim sinh vien theo ten.");
+		printf("\n8. Ghi file");
 		printf("\n0. Thoat chuong trinh.");
 		printf("\nBan chon ? ");
 
@@ -276,17 +335,28 @@ int main() {
 				printf("\nDanh sach sinh vien sau khi sap xep theo ten a-z:\n");
 				hienThiDSSV(dssv, slsv);
 				break;
-
 			case 4:
+				sapXepTheoLop(dssv, slsv);
+				printf("\nDanh sach sinh vien sau khi sap xep theo lop:\n");
+				hienThiDSSV(dssv, slsv);
+				break;
+
+			case 5:
+				sapXep(dssv, slsv);
+				printf("\nDanh sach sinh vien sau khi sap xep theo khoa:\n");
+				hienThiDSSV(dssv, slsv);
+				break;
+
+			case 6:
                 xoaSinhVien(dssv,slsv);
                 slsv--;
 				break;
 
-			case 5:
+			case 7:
 				timTheoTen(dssv, slsv);
 				break;
 
-			case 6:
+			case 8:
 				ghiFile(dssv, slsv);
 				break;
 
