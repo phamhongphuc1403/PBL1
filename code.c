@@ -6,7 +6,7 @@
 struct SinhVien;
 void hienThiDSSV(struct SinhVien*, int);
 void hienThiTenCot();
-int isSorted = 0;
+//int isSorted = 0;
 
 struct HoTen {
 	char ho[20];
@@ -29,9 +29,25 @@ struct SinhVien {
 	char diaChi[30];
 
 };
+
+int MSSV_database[101];
+int MSSV_database_index = 0;
+
+void addMSSVtoDatabase(struct SinhVien* sv) {
+    MSSV_database[MSSV_database_index++] = sv->MSSV;
+//    printf("\n\n\n%d\n\n\n", MSSV_database[0]);
+}
+
+int checkMSSVinDatabase(struct SinhVien* sv) {
+    for (int i = 0; i <= MSSV_database_index; i++) {
+        if (sv->MSSV == MSSV_database[i]) return 0;
+    }
+    return 1;
+}
+
 struct SinhVien nhapSV() {
 
-        isSorted = 0;
+//        isSorted = 0;
 
 		struct SinhVien sv;
 
@@ -42,7 +58,10 @@ struct SinhVien nhapSV() {
         printf("Lop: ");
         scanf("%s", sv.lop);
 
+        nhapMSSV(&sv);
+        addMSSVtoDatabase(&sv);
 		nhapHoTen(&sv.hoVaTen);
+//		            printf("\n\n\n%s\n\n\n\n", sv.hoVaTen.ten);
 		nhapNgaySinh(&sv.ngaySinh);
 		printf("Gioi tinh: ");
 		scanf("%s", sv.gioiTinh);
@@ -52,6 +71,29 @@ struct SinhVien nhapSV() {
 		return sv;
 }
 
+void nhapMSSV(struct SinhVien* sv) {
+        int choice;
+        printf("Ban co muon nhap MSSV khong? (1/0): ");
+        scanf("%d", &choice);
+        if (choice == 1) {
+            int checking = 1;
+            while(checking) {
+                printf("Nhap MSSV: ");
+                scanf("%d", &sv->MSSV);
+                itoa(sv->MSSV,sv->email,10);
+                strcat(sv->email,"@sv1.dut.udn.vn");
+                if (checkMSSVinDatabase(sv)) {
+                    addMSSVtoDatabase(sv);
+                    checking = 0;
+                } else {
+                    printf("MSSV da duoc su dung, xin hay nhap lai.\n");
+                }
+            }
+        } else {
+            sv->MSSV = -1;
+            strcpy(sv->email, "chua cap");
+        }
+}
 void nhapHoTen(struct HoTen* ten) {
     char HoVaTen[100];
     printf("Nhap ho va ten: ");
@@ -123,27 +165,46 @@ void hienThiNgaySinh(struct SinhVien sv) {
 }
 
 void hienThiMSSVvaEmail(struct SinhVien sv, int theLoai) {
-    if (isSorted == 0) {
-        printf("%-16s", "chua cap");
-    } else {
+//    if (isSorted == 0) {
+//        printf("%-16s", "chua cap");
+//    } else {
         if (theLoai == 0) {
             printf("%-16d", sv.MSSV);
         } else {
             printf("%-30s", sv.email);
         }
-    }
+//    }
 }
 
 void capMSSV(struct SinhVien* ds, int slsv) {
-    isSorted = 1;
-
-    for (int i = 0; i < slsv; i++) {
-//        ds[i].MSSV = i + 1;
-//		itoa(i+1,ds[i].email,10);
-//		strcat(ds[i].email,"@dut.udn.vn");
-        ds[i].MSSV = ds[i].khoa * 1000000 + ds[i].khoi * 10000 + i + 1;
-        itoa(ds[i].MSSV,ds[i].email,10);
-		strcat(ds[i].email,"@sv1.dut.udn.vn");
+////    isSorted = 1;
+//
+//    for (int i = 0; i < slsv; i++) {
+//        if (ds[i].MSSV != -1) {
+//            i--;
+//            continue;
+//        }
+//        int temp
+//        ds[i].MSSV = ds[i].khoa * 1000000 + ds[i].khoi * 10000 + i + 1;
+//        checkMSSVinDatabase(sv.MSSV)
+//        itoa(ds[i].MSSV,ds[i].email,10);
+//		strcat(ds[i].email,"@sv1.dut.udn.vn");
+//    }
+    int i = 0, j = 1;
+    while (i < slsv) {
+        if (ds[i].MSSV == -1) {
+            int checking = 1;
+            while (checking) {
+                ds[i].MSSV = ds[i].khoa * 1000000 + ds[i].khoi * 10000 + j++;
+                itoa(ds[i].MSSV,ds[i].email,10);
+                strcat(ds[i].email,"@sv1.dut.udn.vn");
+                if (checkMSSVinDatabase(&ds[i])) {
+                    addMSSVtoDatabase(&ds[i]);
+                    checking = 0;
+                }
+            }
+        }
+        i++;
     }
 }
 
@@ -227,7 +288,7 @@ void xoaSinhVien(struct SinhVien* ds, int slsv){
 	if(timSV == 0) {
 		printf("Khong co sinh vien %s trong danh sach!\n", ten);
 	}
-	isSorted = 0;
+//	isSorted = 0;
 }
 
 void timTheoTen(struct SinhVien* ds, int slsv) {
@@ -250,23 +311,25 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
  void ghiFile(struct SinhVien* ds, int slsv) {
  	FILE* fOut = fopen("dssv", "w");
  	int i;
- 	fprintf(fOut, "%d\n%d\n", slsv, isSorted);
+// 	fprintf(fOut, "%d\n%d\n", slsv, isSorted);
+ 	fprintf(fOut, "%d\n", slsv);
+
  	for(int i = 0; i < slsv; i++) {
         fprintf(fOut, "%d\n%d\n%s\n", ds[i].khoa, ds[i].khoi, ds[i].lop);
 
-        if (isSorted == 0) {
-            fprintf(fOut,"%d\n", -1);
-        } else {
+//        if (isSorted == 0) {
+//            fprintf(fOut,"%d\n", -1);
+//        } else {
             fprintf(fOut,"%d\n", ds[i].MSSV);
-        }
+//        }
         fprintf(fOut, "%s\n%s\n%d\n%d\n%d\n%s\n%s\n",
         ds[i].hoVaTen.ho, ds[i].hoVaTen.ten, ds[i].ngaySinh.ngay, ds[i].ngaySinh.thang, ds[i].ngaySinh.nam, ds[i].gioiTinh, ds[i].diaChi);
 
-        if (isSorted == 0) {
-            fprintf(fOut,"%s\n", "chua-cap");
-        } else {
+//        if (isSorted == 0) {
+//            fprintf(fOut,"%s\n", "chua-cap");
+//        } else {
             fprintf(fOut,"%s\n", ds[i].email);
-        }
+//        }
  	}
  	fclose(fOut);
  }
@@ -276,7 +339,7 @@ void timTheoTen(struct SinhVien* ds, int slsv) {
     FILE* fIn = fopen("dssv", "r");
     fscanf(fIn, "%d", &a);
     *slsv = a;
-    fscanf(fIn, "%d", &isSorted);
+//    fscanf(fIn, "%d", &isSorted);
     for (int i = 0; i < *slsv; i++) {
         fscanf(fIn, "%d%d%s", &ds[i].khoa, &ds[i].khoi, &ds[i].lop);
         fscanf(fIn, "%d ", &ds[i].MSSV);
