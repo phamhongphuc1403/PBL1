@@ -258,7 +258,6 @@ void sapXep(struct SinhVien* ds, int slsv) {
 			int n,m,p;
 			int dauKhoi = dauKhoa;
 			int cuoiKhoi = cuoiKhoa;
-			printf("%d %d %d %d %d\n" ,m,n,p,dauKhoi,cuoiKhoi);
 			for(m = dauKhoa; m <= cuoiKhoa; m++){
 				if(ds[m].khoi != ds[m+1].khoi || (m == cuoiKhoa)){
 					cuoiKhoi = m;
@@ -268,7 +267,6 @@ void sapXep(struct SinhVien* ds, int slsv) {
 								struct SinhVien sv = ds[n];
 								ds[n] = ds[p];
 								ds[p] = sv;
-								hienThiDSSV(ds,slsv);
 							}
 						}
 					}
