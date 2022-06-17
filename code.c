@@ -91,7 +91,7 @@ void nhapMSSV(struct SinhVien* sv) {
             }
         } else {
             sv->MSSV = -1;
-            strcpy(sv->email, "chua cap");
+            strcpy(sv->email, "chua-cap");
         }
 }
 void nhapHoTen(struct HoTen* ten) {
