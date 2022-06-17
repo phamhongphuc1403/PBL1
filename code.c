@@ -397,12 +397,10 @@ printf("\n1. Them Sinh vien vao danh sach.");
 		printf("\n2. Hien thi danh sach sinh vien.");
 		printf("\n3. Sap xep theo ten.");
 		printf("\n4. Hien Thi theo khoa.");
-		printf("\n5. Sap xep theo .");
+		printf("\n5. Sap xep toan bo .");
 		printf("\n6. Xoa sinh vien theo ten.");
 		printf("\n7. Tim sinh vien theo ten.");
 		printf("\n8. Ghi file");
-		printf("\n9. Sap xep theo khoa.");
-		printf("\n10. Sap xep theo khoi.");
 		printf("\n0. Thoat chuong trinh.");
 		printf("\nBan chon ? ");
 
