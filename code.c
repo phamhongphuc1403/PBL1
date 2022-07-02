@@ -88,13 +88,13 @@ int main() {
 				break;
 
 			case 2:
-				printf("\n1. Hien thi theo ten.");
+				printf("\n1. Hien thi toan bo.");
 				printf("\n2. Hien thi theo khoa.");
 				printf("\nBan chon ? ");
 				scanf("%d", &chon);
 				switch(chon) {
 					case 1:
-						hienThiDSSV(dssv, slsv);	
+						hienThiDSSV(dssv, slsv);
 						break;
 
 					case 2:
@@ -109,27 +109,27 @@ int main() {
 
 			case 3:
 				printf("\n1. Sap xep theo ten.");
-				printf("\n2. Sap xep theo theo khoa.");
+				printf("\n2. Sap xep theo theo khoa va cap MSSV.");
 				printf("\nBan chon ? ");
 				scanf("%d", &chon);
 				switch(chon) {
-					case 1:
-						sapXepTheoTen(dssv, slsv);
-						printf("\nDanh sach sinh vien sau khi sap xep theo ten a-z:\n");
-						hienThiDSSV(dssv, slsv);	
-						break;
+                    case 1:
+                        sapXepTheoTen(dssv, slsv);
+                        printf("\nDanh sach sinh vien sau khi sap xep theo ten a-z:\n");
+                        hienThiDSSV(dssv, slsv);
+                        break;
 
-					case 2:
-						sapXep(dssv, slsv);
-						printf("\nDanh sach sinh vien sau khi sap xep theo khoa:\n");
-						hienThiDSSV(dssv, slsv);
-						break;
-					default:
-						printf("Sai chuc nang, vui long chon lai!\n");
-						break;
+                    case 2:
+                        sapXep(dssv, slsv);
+                        printf("\nDanh sach sinh vien sau khi sap xep theo khoa:\n");
+                        hienThiDSSV(dssv, slsv);
+                        break;
+                    default:
+                        printf("Sai chuc nang, vui long chon lai!\n");
+                        break;
 				}
 				break;
-				
+
 			case 4:
                 xoaSinhVien(dssv,slsv);
                 slsv--;
@@ -142,7 +142,7 @@ int main() {
 			case 6:
 				ghiFile(dssv, slsv);
 				break;
-			
+
 			default:
 				printf("Sai chuc nang, vui long chon lai!\n");
 				break;
@@ -341,7 +341,7 @@ void sapXepTheoTen(struct SinhVien* ds, int slsv) {
 			}
 		}
 	}
-	
+
 }
 
 void sapXep(struct SinhVien* ds, int slsv) {
@@ -374,7 +374,7 @@ void sapXep(struct SinhVien* ds, int slsv) {
 					}
 				}
 			}
-			
+
 
 			// Sap xep lop
 			int n,m,p;
@@ -393,14 +393,14 @@ void sapXep(struct SinhVien* ds, int slsv) {
 						}
 					}
 					dauKhoi = m + 1;
-					
+
 				}
 			}
 
 			dauKhoa = i + 1;
 		}
 	}
-	
+
 	capMssvEmail(ds, slsv);
 }
 
