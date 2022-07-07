@@ -51,6 +51,7 @@ void capMssvEmail(struct SinhVien* ds, int slsv);
 void sapXepTheoTen(struct SinhVien* ds, int slsv);
 void sapXep(struct SinhVien* ds, int slsv);
 void hienThiTheoKhoa(struct SinhVien* ds, int slsv);
+void hienThiTheoLop(struct SinhVien* ds, int slsv);
 void xoaSinhVien(struct SinhVien* ds, int slsv);
 void timTheoTen(struct SinhVien* ds, int slsv);
 void ghiFile(struct SinhVien* ds, int slsv);
@@ -88,48 +89,55 @@ int main() {
 				break;
 
 			case 2:
-				printf("\n1. Hien thi toan bo.");
+				printf("\n1. Hien thi theo ten.");
 				printf("\n2. Hien thi theo khoa.");
+				printf("\n3. Hien thi theo lop.");
 				printf("\nBan chon ? ");
 				scanf("%d", &chon);
 				switch(chon) {
 					case 1:
-						hienThiDSSV(dssv, slsv);
+						hienThiDSSV(dssv, slsv);	
 						break;
 
 					case 2:
 						printf("\nDanh sach sinh vien hien thi theo khoa:\n");
 						hienThiTheoKhoa(dssv, slsv);
 						break;
+
+					case 3:
+						printf("\nDanh sach sinh vien hien thi theo lop:\n");
+						hienThiTheoLop(dssv, slsv);
+						break;
+
 					default:
-					printf("Sai chuc nang, vui long chon lai!\n");
-					break;
+						printf("Sai chuc nang, vui long chon lai!\n");
+						break;
 				}
 				break;
 
 			case 3:
 				printf("\n1. Sap xep theo ten.");
-				printf("\n2. Sap xep theo theo khoa va cap MSSV.");
+				printf("\n2. Sap xep theo theo khoa.");
 				printf("\nBan chon ? ");
 				scanf("%d", &chon);
 				switch(chon) {
-                    case 1:
-                        sapXepTheoTen(dssv, slsv);
-                        printf("\nDanh sach sinh vien sau khi sap xep theo ten a-z:\n");
-                        hienThiDSSV(dssv, slsv);
-                        break;
+					case 1:
+						sapXepTheoTen(dssv, slsv);
+						printf("\nDanh sach sinh vien sau khi sap xep theo ten a-z:\n");
+						hienThiDSSV(dssv, slsv);	
+						break;
 
-                    case 2:
-                        sapXep(dssv, slsv);
-                        printf("\nDanh sach sinh vien sau khi sap xep theo khoa:\n");
-                        hienThiDSSV(dssv, slsv);
-                        break;
-                    default:
-                        printf("Sai chuc nang, vui long chon lai!\n");
-                        break;
+					case 2:
+						sapXep(dssv, slsv);
+						printf("\nDanh sach sinh vien sau khi sap xep theo khoa:\n");
+						hienThiDSSV(dssv, slsv);
+						break;
+					default:
+						printf("Sai chuc nang, vui long chon lai!\n");
+						break;
 				}
 				break;
-
+				
 			case 4:
                 xoaSinhVien(dssv,slsv);
                 slsv--;
@@ -142,7 +150,7 @@ int main() {
 			case 6:
 				ghiFile(dssv, slsv);
 				break;
-
+			
 			default:
 				printf("Sai chuc nang, vui long chon lai!\n");
 				break;
@@ -341,7 +349,7 @@ void sapXepTheoTen(struct SinhVien* ds, int slsv) {
 			}
 		}
 	}
-
+	
 }
 
 void sapXep(struct SinhVien* ds, int slsv) {
@@ -374,7 +382,7 @@ void sapXep(struct SinhVien* ds, int slsv) {
 					}
 				}
 			}
-
+			
 
 			// Sap xep lop
 			int n,m,p;
@@ -393,14 +401,14 @@ void sapXep(struct SinhVien* ds, int slsv) {
 						}
 					}
 					dauKhoi = m + 1;
-
+					
 				}
 			}
 
 			dauKhoa = i + 1;
 		}
 	}
-
+	
 	capMssvEmail(ds, slsv);
 }
 
@@ -417,6 +425,22 @@ void hienThiTheoKhoa(struct SinhVien* ds, int slsv){
 	}
 	printf("-----------------------------------------------------"
 	"----------------------------------------------------------------\n");
+}
+
+void hienThiTheoLop(struct SinhVien* ds, int slsv){
+	sapXepTheoTen(ds, slsv);
+	int lop;
+	printf("Nhap lop: \n");
+	scanf("%d",&lop);
+	hienThiTenCot();
+	for(int i = 0; i < slsv; i++){
+		if(ds[i].lop == lop){
+			hienThiTTSV(ds[i]);
+		}
+	}
+	printf("-----------------------------------------------------"
+	"----------------------------------------------------------------\n");
+
 }
 
 void xoaSinhVien(struct SinhVien* ds, int slsv){
