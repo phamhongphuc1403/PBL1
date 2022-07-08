@@ -37,6 +37,8 @@ int soLuongKhoa;
 struct khoa khoaData[20];
 
 void docKhoa();
+void nhapKhoa(struct SinhVien *sv);
+int checkKhoa(struct khoa khoaData[], char tenKhoa[]);
 void hienThiDSSV(struct SinhVien*, int);
 void hienThiTenCot();
 int MSSV_database[101];
@@ -60,7 +62,11 @@ void hienThiTheoLop(struct SinhVien* ds, int slsv);
 void xoaSinhVien(struct SinhVien* ds, int slsv);
 int timTheoTen(struct SinhVien* ds, int slsv, char ten[]);
 void ghiFile(struct SinhVien* ds, int slsv);
+void ghiFileAll(struct SinhVien* ds, int slsv);
+void ghiFileLop(struct SinhVien *ds, int slsv, int count, int lop);
+void ghiFileKhoa(struct SinhVien *ds, int slsv, int count, int khoa);
 void docFile(struct SinhVien* ds, int *slsv);
+
 
 int main() {
 	struct SinhVien dssv[100];
@@ -617,7 +623,7 @@ void ghiFileLop(struct SinhVien *ds, int slsv, int count, int lop) {
     fclose(fOut);
 }
 
-ghiFileKhoa(struct SinhVien *ds, int slsv, int count, int khoa) {
+void ghiFileKhoa(struct SinhVien *ds, int slsv, int count, int khoa) {
     char ten_khoa[20] = {'k', 'h', 'o', 'a', ' ', '\0'}, khoa_string[10];
     itoa(khoa, khoa_string, 10);
     strcat(ten_khoa, khoa_string);
