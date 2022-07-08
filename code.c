@@ -36,6 +36,7 @@ struct khoa {
 int soLuongKhoa;
 struct khoa khoaData[20];
 
+void gioiThieu();
 void docKhoa();
 void nhapKhoa(struct SinhVien *sv);
 int checkKhoa(struct khoa khoaData[], char tenKhoa[]);
@@ -76,21 +77,7 @@ int main() {
 
     docFile(dssv, &slsv);
     docKhoa();
-    printf("\t ______________________________________________________________________________________________ \n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|                                 DO AN PBL1: LAP TRINH TINH TOAN                              |\n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|                       DE TAI: XAY DUNG UNG DUNG QUAN LY DANH SACH SINH VIEN                  |\n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|                            Giao vien huong dan: Nguyen Thi Minh Hy                           |\n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|                        Sinh vien thuc hien:  Pham Hong Phuc - 102210271                      |\n");
-    printf("\t|                                              Tran Van Duc Son - 102210275                    |\n");
-    printf("\t|                                                                                              |\n");
-    printf("\t|______________________________________________________________________________________________|\n");
-
+    gioiThieu();
 	do {
 		printf("\n\n=============== MENU ===============");
 		printf("\n1. Them Sinh vien vao danh sach.");
@@ -192,6 +179,23 @@ int main() {
 
 }
 
+void gioiThieu() {
+    printf("\t ______________________________________________________________________________________________ \n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|                                 DO AN PBL1: LAP TRINH TINH TOAN                              |\n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|                       DE TAI: XAY DUNG UNG DUNG QUAN LY DANH SACH SINH VIEN                  |\n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|                            Giao vien huong dan: Nguyen Thi Minh Hy                           |\n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|                        Sinh vien thuc hien:  Pham Hong Phuc - 102210271                      |\n");
+    printf("\t|                                              Tran Van Duc Son - 102210275                    |\n");
+    printf("\t|                                                                                              |\n");
+    printf("\t|______________________________________________________________________________________________|\n");
+}
+
 void addMSSVtoDatabase(struct SinhVien* sv) {
     MSSV_database[MSSV_database_index++] = sv->MSSV;
 }
@@ -237,9 +241,9 @@ void docKhoa() {
 }
 
 void nhapKhoa(struct SinhVien *sv) {
-       for (int i = 0; i < soLuongKhoa; i++) {
-       printf("%s\n%d\n", khoaData[i].tenKhoa, khoaData[i].maKhoa);
-   }
+//       for (int i = 0; i < soLuongKhoa; i++) {
+//       printf("%s\n%d\n", khoaData[i].tenKhoa, khoaData[i].maKhoa);
+//   }
     int choice = 1;
     printf("Ban muon: \n1. Nhap ten khoa.\n2. Nhap ma khoa.\nBan chon: ");
     scanf("%d", &choice);
@@ -513,14 +517,14 @@ void hienThiTheoLop(struct SinhVien* ds, int slsv){
 
 void xoaSinhVien(struct SinhVien* ds, int slsv){
     char ten[20];
-	printf("Nhap ten: ");
+	printf("Nhap ten sinh vien can xoa: ");
 	scanf("%s", ten);
 
     int total = timTheoTen(ds, slsv, ten);
     if (total != 0) {
         int pos;
         do {
-            printf("nhap so thu tu cua sinh vien can xoa: ");
+            printf("\nnhap so thu tu cua sinh vien can xoa: ");
             scanf("%d", &pos);
 
             if (pos > total) {
