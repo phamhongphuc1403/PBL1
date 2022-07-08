@@ -237,9 +237,9 @@ void docKhoa() {
 }
 
 void nhapKhoa(struct SinhVien *sv) {
-//        for (int i = 0; i < soLuongKhoa; i++) {
-//        printf("%s\n%d\n", khoaData[i].tenKhoa, khoaData[i].maKhoa);
-//    }
+       for (int i = 0; i < soLuongKhoa; i++) {
+       printf("%s\n%d\n", khoaData[i].tenKhoa, khoaData[i].maKhoa);
+   }
     int choice = 1;
     printf("Ban muon: \n1. Nhap ten khoa.\n2. Nhap ma khoa.\nBan chon: ");
     scanf("%d", &choice);
@@ -395,6 +395,7 @@ void capMssvEmail(struct SinhVien* ds, int slsv) {
         i++;
     }
 }
+
 
 void sapXepTheoTen(struct SinhVien* ds, int slsv) {
 	int i, j;
